@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MoRoC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8fc21591febf6ca5bd524e5116ea9e7a92c85168")]
 [assembly: System.Reflection.AssemblyProductAttribute("MoRoC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MoRoC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

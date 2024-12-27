@@ -1,4 +1,6 @@
-﻿using Avalonia;
+﻿using System.IO;
+using System.Reflection;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Media;
@@ -13,8 +15,10 @@ namespace MoRoC.Views
     {
         public MainWindow()
         {
+            string executableDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string iconPath = Path.Combine(executableDirectory, "MoRoC.png");
             DataContext = new MainWindowViewModel();
-            this.Icon = new WindowIcon("D:\\MoRoC\\MoRoC\\Assets\\MoRoC.png");
+            this.Icon = new WindowIcon(iconPath);
             this.Title = "MoRoC";
             this.RequestedThemeVariant = Avalonia.Styling.ThemeVariant.Dark;
 

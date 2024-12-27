@@ -125,3 +125,4 @@ D:\MoRoC\MoRoC\obj\Debug\net8.0\refint\Avalonia\MoRoC.dll
 D:\MoRoC\MoRoC\obj\Debug\net8.0\MoRoC.csproj.Up2Date
 D:\MoRoC\MoRoC\obj\Debug\net8.0\MoRoC.genruntimeconfig.cache
 D:\MoRoC\MoRoC\obj\Debug\net8.0\ref\MoRoC.dll
+D:\MoRoC\MoRoC\obj\Debug\net8.0\MoRoC.sourcelink.json

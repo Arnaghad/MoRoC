@@ -155,7 +155,7 @@ namespace MoRoC.ViewModels
                         MbFanSpeed.Input.Value = string.Join("\n", _motherboard.Fans);
                         CpuUsage.Input.Value = _cpu.CpuUsage;
                         CpuPowerUsage.Input.Value = _cpu.PowerUsage;
-                        CpuClockSpeed.Input.Value = $"{_cpu.TotalClockSpeed} MHz";
+                        CpuClockSpeed.Input.Value = _cpu.TotalClockSpeed;
                         CoresClockSpeed.Input.Value = string.Join("\n", _cpu.ClockSpeeds);
                         GpuClockSpeed.Input.Value = $"{_gpu.CoreClockSpeed} MHz";
                         GpuMemoryClockSpeed.Input.Value = $"{_gpu.MemoryClockSpeed} MHz";

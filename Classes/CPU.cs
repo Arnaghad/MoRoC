@@ -175,17 +175,24 @@ namespace MoRoC.Classes
         private void UpdateTotalClockSpeed()
         {
             double totalSpeed = 0;
+            int coreCount = 0;
+
             foreach (var cpu in _computer.Hardware.Where(h => h.HardwareType == HardwareType.Cpu))
             {
                 cpu.Update();
-                var speeds = cpu.Sensors
+                var coreSpeeds = cpu.Sensors
                     .Where(s => s.SensorType == SensorType.Clock 
                                 && s.Value.HasValue 
                                 && s.Name != "Bus Speed")
-                    .Sum(s => s.Value.Value);
-                totalSpeed += speeds;
+                    .Select(s => s.Value.Value);
+
+                totalSpeed += coreSpeeds.Sum();
+                coreCount += coreSpeeds.Count();
             }
-            TotalClockSpeed = $"{(totalSpeed / 10000):F2} GHz";
+
+            // Розрахунок середньої швидкості
+            double averageSpeed = coreCount > 0 ? totalSpeed / coreCount : 0;
+            TotalClockSpeed = $"{(averageSpeed / 1000):F2} GHz"; // Ділимо на 1000 для конвертації в GHz
         }
 
         private void UpdateLoad()
