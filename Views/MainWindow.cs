@@ -102,7 +102,7 @@ namespace MoRoC.Views
             AddToGrid(grid, CreateLabelBlock("Storage"), 11);
             AddToGrid(grid, CreateBindingBlock("StorageNames"), 12);
             AddToGrid(grid, CreateSplitter(), 13);
-            AddToGrid(grid, CreateLabelBlock("Ram"), 14);
+            AddToGrid(grid, CreateLabelBlock("RAM"), 14);
             AddToGrid(grid, CreateBindingBlock("TotalRamVolume"), 15);
             AddToGrid(grid, CreateSplitter(), 16);
 
@@ -155,7 +155,7 @@ namespace MoRoC.Views
             AddToGrid(grid, CreateLabelBlock("GPU"), 5);
             AddToGrid(grid, CreateBindingBlock("GpuFanSpeed.Output.Value"), 6);
             AddToGrid(grid, CreateSplitter(), 7);
-            AddToGrid(grid, CreateLabelBlock("MotherBoard"), 8);
+            AddToGrid(grid, CreateLabelBlock("Motherboard"), 8);
             AddToGrid(grid, CreateBindingBlock("MbFanSpeed.Output.Value"), 9);
             AddToGrid(grid, CreateSplitter(), 10);
 
@@ -226,7 +226,7 @@ namespace MoRoC.Views
             AddToGrid(grid, CreateLabelBlock("Logical Cores"), 11);
             AddToGrid(grid, CreateBindingBlock("LogicalCores"), 12);
             AddToGrid(grid, CreateSplitter(), 13);
-            AddToGrid(grid, CreateLabelBlock("Load of Process"), 14);
+            AddToGrid(grid, CreateLabelBlock("Load of Processor"), 14);
             AddToGrid(grid, CreateBindingBlock("CpuUsage.Output.Value"), 15);
             AddToGrid(grid, CreateSplitter(), 16);
             AddToGrid(grid, CreateLabelBlock("Power Usage"), 17);
@@ -307,7 +307,7 @@ namespace MoRoC.Views
         {
             var grid = new Grid();
 
-            for (int i = 0; i < 26; i++)
+            for (int i = 0; i < 23; i++)
             {
                 grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
             }
@@ -329,15 +329,12 @@ namespace MoRoC.Views
             AddToGrid(grid, CreateLabelBlock("GPU Load"), 14);
             AddToGrid(grid, CreateBindingBlock("GpuLoad.Output.Value"), 15);
             AddToGrid(grid, CreateSplitter(), 16);
-            AddToGrid(grid, CreateLabelBlock("GPU Load"), 17);
-            AddToGrid(grid, CreateBindingBlock("GpuLoad.Output.Value"), 18);
+            AddToGrid(grid, CreateLabelBlock("GPU Power Load"), 17);
+            AddToGrid(grid, CreateBindingBlock("GpuPowerLoad.Output.Value"), 18);
             AddToGrid(grid, CreateSplitter(), 19);
-            AddToGrid(grid, CreateLabelBlock("GPU Power Load"), 20);
-            AddToGrid(grid, CreateBindingBlock("GpuPowerLoad.Output.Value"), 21);
+            AddToGrid(grid, CreateLabelBlock("Fan Speed"), 20);
+            AddToGrid(grid, CreateBindingBlock("GpuFanSpeed.Output.Value"), 21);
             AddToGrid(grid, CreateSplitter(), 22);
-            AddToGrid(grid, CreateLabelBlock("Fan Speed"), 23);
-            AddToGrid(grid, CreateBindingBlock("GpuFanSpeed.Output.Value"), 24);
-            AddToGrid(grid, CreateSplitter(), 25);
 
             return grid;
         }
@@ -394,7 +391,7 @@ namespace MoRoC.Views
         {
             var grid = new Grid();
 
-            for (int i = 0; i < 17; i++)
+            for (int i = 0; i < 20; i++)
             {
                 grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
             }
@@ -416,6 +413,9 @@ namespace MoRoC.Views
             AddToGrid(grid, CreateLabelBlock("BIOS Manufacturer"), 14);
             AddToGrid(grid, CreateBindingBlock("MbManufacturerBiosName"), 15);
             AddToGrid(grid, CreateSplitter(), 16);
+            AddToGrid(grid, CreateLabelBlock("Fan Speed"), 17);
+            AddToGrid(grid, CreateBindingBlock("MbFanSpeed.Output.Value"), 18);
+            AddToGrid(grid, CreateSplitter(), 19);
             return grid;
         }
 
