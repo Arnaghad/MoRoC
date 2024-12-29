@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace MoRoC.Classes
 {
-    public class MotherBoard : HardwareMonitor, IDisposable
+    public class MotherBoard : IDisposable
     {
         private Computer _computer;
 

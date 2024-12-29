@@ -6,15 +6,21 @@ using System.Management;
 
 namespace MoRoC.Classes
 {
-    public class Storage : HardwareMonitor, IDisposable
+    public class Storage : IDisposable
     {
         // Властивості
         public List<string> Names { get; private set; } = new List<string>();
         public List<string> Temperatures { get; private set; } = new List<string>();
         
+        private Computer _computer;
         // Конструктор
         public Storage() : base()
         {
+            _computer = new Computer
+            {
+                IsStorageEnabled = true
+            };
+            _computer.Open();
             UpdateAllProperties();
         }
 
@@ -41,7 +47,7 @@ namespace MoRoC.Classes
         private void UpdateTemperatures()
         {
             Temperatures.Clear();
-            foreach (var hardware in computer.Hardware)
+            foreach (var hardware in _computer.Hardware)
             {
                 if (hardware.HardwareType == HardwareType.Storage)
                 {
@@ -67,7 +73,7 @@ namespace MoRoC.Classes
 
         public void Dispose()
         {
-            computer?.Close();
+            _computer?.Close();
         }
     }
 }

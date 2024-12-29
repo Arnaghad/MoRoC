@@ -6,7 +6,7 @@ using LibreHardwareMonitor.Hardware;
 
 namespace MoRoC.Classes
 {
-    public class CPU : HardwareMonitor, IDisposable
+    public class CPU : IDisposable
     {
         private Computer _computer;
 
@@ -35,7 +35,8 @@ namespace MoRoC.Classes
 
             _computer = new Computer
             {
-                IsCpuEnabled = true
+                IsCpuEnabled = true,
+                IsMotherboardEnabled = true
             };
             _computer.Open();
 
@@ -143,7 +144,7 @@ namespace MoRoC.Classes
 
             // Список усіх сенсорів вентиляторів
             var allFanSensors = new List<ISensor>();
-            foreach (var hardware in computer.Hardware)
+            foreach (var hardware in _computer.Hardware)
             {
                 UpdateAndCollectSensors(hardware, allFanSensors);
             }

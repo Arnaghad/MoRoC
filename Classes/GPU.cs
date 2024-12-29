@@ -5,7 +5,7 @@ using LibreHardwareMonitor.Hardware;
 
 namespace MoRoC.Classes
 {
-    public class GPU : HardwareMonitor, IDisposable
+    public class GPU : IDisposable
     {
         private Computer _computer;
 
