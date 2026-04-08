@@ -33,6 +33,9 @@ public class MotherboardTemperatureGraph : UserControl
         {
             Values = _temperatureData,
             Fill = null,
+            Stroke = new SolidColorPaint(SKColor.Parse("#94573B")) { StrokeThickness = 3 },
+            GeometryFill = new SolidColorPaint(SKColor.Parse("#192432")),
+            GeometryStroke = new SolidColorPaint(SKColor.Parse("#C8936E")) { StrokeThickness = 2 },
             Mapping = (point, index) => new LiveChartsCore.Kernel.Coordinate(
                 point.X ?? 0, 
                 point.Y ?? 0
@@ -52,9 +55,9 @@ public class MotherboardTemperatureGraph : UserControl
                     NamePadding = new LiveChartsCore.Drawing.Padding(0, 15),
                     NamePaint = new SolidColorPaint
                     {
-                        Color = new SKColor(255, 255, 255)
+                        Color = SKColor.Parse("#C8936E")
                     },
-                    LabelsPaint = new SolidColorPaint(new SKColor(255, 255, 255)),
+                    LabelsPaint = new SolidColorPaint(SKColor.Parse("#EBE2CD")),
                     TextSize = 12
                 }
             },
@@ -66,9 +69,9 @@ public class MotherboardTemperatureGraph : UserControl
                     NamePadding = new LiveChartsCore.Drawing.Padding(15, 0),
                     NamePaint = new SolidColorPaint
                     {
-                        Color = new SKColor(255, 255, 255)
+                        Color = SKColor.Parse("#C8936E")
                     },
-                    LabelsPaint = new SolidColorPaint(new SKColor(255, 255, 255)),
+                    LabelsPaint = new SolidColorPaint(SKColor.Parse("#EBE2CD")),
                     TextSize = 12
                 }
             },

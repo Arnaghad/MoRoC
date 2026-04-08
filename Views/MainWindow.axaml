@@ -8,7 +8,7 @@
         Title="MoRoC"
         RequestedThemeVariant="Dark"
         Background="{DynamicResource AppBackground}"
-        FontFamily="Segoe UI, Inter, sans-serif">
+        FontFamily="Nunito, Segoe UI, sans-serif">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
