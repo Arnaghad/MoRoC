@@ -1,9 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Styling;
-using Material.Colors;
-using Material.Styles.Themes;
-using Material.Styles.Themes.Base;
+using Avalonia.Themes.Fluent;
 using MoRoC.ViewModels;
 using MoRoC.Views;
 
@@ -13,14 +11,10 @@ namespace MoRoC
     {
         public override void Initialize()
         {
-            var materialTheme = new MaterialTheme(null)
-            {
-                BaseTheme = BaseThemeMode.Dark,
-                PrimaryColor = PrimaryColor.Brown
-            };
+            var fluentTheme = new FluentTheme();
+            Styles.Add(fluentTheme);
 
-            Styles.Add(materialTheme);
-            RequestedThemeVariant = ThemeVariant.Default;
+            RequestedThemeVariant = ThemeVariant.Dark;
 
             Resources.Add("AppBackground", Avalonia.Media.SolidColorBrush.Parse("#192432"));
             Resources.Add("AppPrimary", Avalonia.Media.SolidColorBrush.Parse("#94573B"));
