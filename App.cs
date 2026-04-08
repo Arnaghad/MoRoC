@@ -25,6 +25,7 @@ namespace MoRoC
             Resources.Add("AppBackground", Avalonia.Media.SolidColorBrush.Parse("#192432"));
             Resources.Add("AppPrimary", Avalonia.Media.SolidColorBrush.Parse("#94573B"));
             Resources.Add("AppBorder", Avalonia.Media.SolidColorBrush.Parse("#C8936E"));
+            Resources.Add("AppCardBackground", Avalonia.Media.SolidColorBrush.Parse("#1E2B3C"));
             Resources.Add("AppHighlight", Avalonia.Media.SolidColorBrush.Parse("#EBE2CD"));
 
             // Gradient
