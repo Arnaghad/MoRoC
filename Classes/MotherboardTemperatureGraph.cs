@@ -80,9 +80,6 @@ public class MotherboardTemperatureGraph : UserControl
         };
 
         Content = chart;
-
-        _cancellationTokenSource = new CancellationTokenSource();
-        Task.Run(() => UpdateTemperaturesAsync(_cancellationTokenSource.Token));
     }
 
     private async Task UpdateTemperaturesAsync(CancellationToken cancellationToken)

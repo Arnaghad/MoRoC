@@ -78,10 +78,10 @@ public class GpuClockSpeedsGraph : UserControl
         Content = chart;
 
         // Створюємо токен для відміни задачі
-        _cancellationTokenSource = new CancellationTokenSource();
+
 
         // Запускаємо задачу для оновлення даних
-        Task.Run(() => UpdateClockSpeedsAsync(_cancellationTokenSource.Token));
+
     }
 
     private async Task UpdateClockSpeedsAsync(CancellationToken cancellationToken)
