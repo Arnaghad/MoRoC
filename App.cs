@@ -16,8 +16,7 @@ namespace MoRoC
             var materialTheme = new MaterialTheme(null)
             {
                 BaseTheme = BaseThemeMode.Dark,
-                PrimaryColor = PrimaryColor.Brown,
-                SecondaryColor = SecondaryColor.Brown
+                PrimaryColor = PrimaryColor.Brown
             };
 
             Styles.Add(materialTheme);
