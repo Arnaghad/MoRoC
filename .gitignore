@@ -1,0 +1,11 @@
+# Налаштування IDE (Rider / Visual Studio)
+.idea/
+.vs/
+
+# Результати збірки проєкту (.NET / Avalonia)
+[Bb]in/
+[Oo]bj/
+
+# Логи та тимчасові файли
+error_log.txt
+output.txt
