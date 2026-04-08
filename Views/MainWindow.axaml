@@ -59,6 +59,26 @@
         <Style Selector="TabItem:selected">
             <Setter Property="Foreground" Value="{DynamicResource AppHighlight}" />
         </Style>
+        <Style Selector="ComboBox">
+            <Setter Property="Background" Value="{DynamicResource AppCardBackground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource AppBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="{DynamicResource AppHighlight}" />
+            <Setter Property="CornerRadius" Value="8" />
+        </Style>
+        <Style Selector="ComboBox:pointerover /template/ Border#Background">
+            <Setter Property="Background" Value="{DynamicResource AppPrimary}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource AppHighlight}" />
+        </Style>
+        <Style Selector="ComboBoxItem">
+            <Setter Property="Foreground" Value="{DynamicResource AppHighlight}" />
+        </Style>
+        <Style Selector="ComboBoxItem:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource AppPrimary}" />
+        </Style>
+        <Style Selector="ComboBoxItem:selected /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource AppPrimary}" />
+        </Style>
     </Window.Styles>
 
     <TabControl Margin="5" TabStripPlacement="Left" Background="{DynamicResource AppBackground}">
