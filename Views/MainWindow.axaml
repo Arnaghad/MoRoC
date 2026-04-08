@@ -6,7 +6,8 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/MoRoC.ico"
         Title="MoRoC"
-        RequestedThemeVariant="Dark">
+        RequestedThemeVariant="Dark"
+        Background="{DynamicResource AppBackground}">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
@@ -17,23 +18,32 @@
             <Setter Property="FontSize" Value="25" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Margin" Value="10" />
+            <Setter Property="Foreground" Value="{DynamicResource AppHighlight}" />
         </Style>
         <Style Selector="TextBlock.Label">
             <Setter Property="FontSize" Value="20" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Margin" Value="10, 1, 0, 0" />
+            <Setter Property="Foreground" Value="{DynamicResource AppBorder}" />
         </Style>
         <Style Selector="TextBlock.Value">
             <Setter Property="FontSize" Value="20" />
             <Setter Property="Margin" Value="10, 1, 0, 10" />
+            <Setter Property="Foreground" Value="{DynamicResource AppHighlight}" />
         </Style>
         <Style Selector="GridSplitter">
-            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="Background" Value="{DynamicResource AppPrimary}"/>
             <Setter Property="IsEnabled" Value="False"/>
+        </Style>
+        <Style Selector="TabItem">
+            <Setter Property="Foreground" Value="{DynamicResource AppBorder}" />
+        </Style>
+        <Style Selector="TabItem:selected">
+            <Setter Property="Foreground" Value="{DynamicResource AppHighlight}" />
         </Style>
     </Window.Styles>
 
-    <TabControl Margin="5" TabStripPlacement="Left">
+    <TabControl Margin="5" TabStripPlacement="Left" Background="{DynamicResource AppBackground}">
         
         <!-- General Tab -->
         <TabItem Header="General">
