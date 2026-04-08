@@ -34,6 +34,7 @@ public class CpuTemperatureGraph : UserControl
         {
             Values = _temperatureData,
             Fill = null,
+            GeometrySize = 0,
             Stroke = new SolidColorPaint(SKColor.Parse("#94573B")) { StrokeThickness = 3 },
             GeometryFill = new SolidColorPaint(SKColor.Parse("#192432")),
             GeometryStroke = new SolidColorPaint(SKColor.Parse("#C8936E")) { StrokeThickness = 2 },
