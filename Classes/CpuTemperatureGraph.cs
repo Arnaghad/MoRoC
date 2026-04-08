@@ -81,6 +81,8 @@ public class CpuTemperatureGraph : UserControl
         };
 
         Content = chart;
+        _cancellationTokenSource = new CancellationTokenSource();
+        Task.Run(() => UpdateTemperaturesAsync(_cancellationTokenSource.Token));
     }
 
     private async Task UpdateTemperaturesAsync(CancellationToken cancellationToken)
@@ -126,16 +128,4 @@ public class CpuTemperatureGraph : UserControl
         }
     }
 
-    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        base.OnAttachedToVisualTree(e);
-        _cancellationTokenSource = new CancellationTokenSource();
-        Task.Run(() => UpdateTemperaturesAsync(_cancellationTokenSource.Token));
     }
-
-    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        base.OnDetachedFromVisualTree(e);
-        _cancellationTokenSource?.Cancel();
-    }
-}

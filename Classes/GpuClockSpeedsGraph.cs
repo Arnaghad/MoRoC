@@ -76,6 +76,8 @@ public class GpuClockSpeedsGraph : UserControl
         };
 
         Content = chart;
+        _cancellationTokenSource = new CancellationTokenSource();
+        Task.Run(() => UpdateClockSpeedsAsync(_cancellationTokenSource.Token));
 
         // Створюємо токен для відміни задачі
 
@@ -128,16 +130,4 @@ public class GpuClockSpeedsGraph : UserControl
         }
     }
 
-    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        base.OnAttachedToVisualTree(e);
-        _cancellationTokenSource = new CancellationTokenSource();
-        Task.Run(() => UpdateClockSpeedsAsync(_cancellationTokenSource.Token));
     }
-
-    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        base.OnDetachedFromVisualTree(e);
-        _cancellationTokenSource?.Cancel();
-    }
-}
