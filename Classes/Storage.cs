@@ -14,7 +14,7 @@ namespace MoRoC.Classes
         
         private Computer _computer => HardwareMonitorService.Instance.Computer;
         // Конструктор
-        public Storage() : base()
+        public Storage()
         {
 
             UpdateAllProperties();

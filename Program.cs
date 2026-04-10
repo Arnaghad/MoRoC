@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Avalonia;
+using Avalonia.Media;
 using ReactiveUI.Avalonia;
 
 namespace MoRoC
@@ -29,7 +30,14 @@ namespace MoRoC
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
-                .WithInterFont()
+                .With(new FontManagerOptions
+                {
+                    DefaultFamilyName = "avares://MoRoC/Assets/Fonts/#e-Ukraine",
+                    FontFallbacks = new[]
+                    {
+                        new FontFallback { FontFamily = new FontFamily("avares://MoRoC/Assets/Fonts/#e-Ukraine") }
+                    }
+                })
                 .LogToTrace()
                 .UseReactiveUI(_ => { });
 

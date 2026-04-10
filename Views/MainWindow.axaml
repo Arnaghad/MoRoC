@@ -1,101 +1,161 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:MoRoC.ViewModels"
+        xmlns:models="using:MoRoC.Models"
         xmlns:views="using:MoRoC.Classes"
         x:Class="MoRoC.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/MoRoC.ico"
         Title="MoRoC"
-        RequestedThemeVariant="Dark">
+        RequestedThemeVariant="Dark"
+        Background="{DynamicResource AppBackground}"
+        FontFamily="avares://MoRoC/Assets/Fonts/#e-Ukraine, Segoe UI, sans-serif"
+        MinWidth="800" MinHeight="600">
 
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
 
     <Window.Styles>
         <Style Selector="TextBlock.Header">
             <Setter Property="FontSize" Value="25" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Margin" Value="10" />
+            <Setter Property="Foreground" Value="{DynamicResource AppButtonGradient}" />
+            <Setter Property="TextWrapping" Value="Wrap" />
         </Style>
         <Style Selector="TextBlock.Label">
             <Setter Property="FontSize" Value="20" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Margin" Value="10, 1, 0, 0" />
+            <Setter Property="Foreground" Value="{DynamicResource AppBorder}" />
         </Style>
         <Style Selector="TextBlock.Value">
             <Setter Property="FontSize" Value="20" />
             <Setter Property="Margin" Value="10, 1, 0, 10" />
+            <Setter Property="Foreground" Value="{DynamicResource AppHighlight}" />
+            <Setter Property="TextWrapping" Value="Wrap" />
         </Style>
-        <Style Selector="GridSplitter">
-            <Setter Property="Background" Value="Gray"/>
-            <Setter Property="IsEnabled" Value="False"/>
+        <Style Selector="Border.HSep">
+            <Setter Property="Background" Value="{DynamicResource AppPrimary}"/>
+            <Setter Property="Height" Value="1"/>
+            <Setter Property="Margin" Value="10, 5"/>
+            <Setter Property="Opacity" Value="0.5"/>
+        </Style>
+        <Style Selector="Border.VSep">
+            <Setter Property="Background" Value="{DynamicResource AppPrimary}"/>
+            <Setter Property="Width" Value="1"/>
+            <Setter Property="Margin" Value="10, 10"/>
+            <Setter Property="Opacity" Value="0.5"/>
+        </Style>
+        <Style Selector="Border.Card">
+            <Setter Property="Background" Value="{DynamicResource AppCardBackground}" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Padding" Value="15" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="BorderBrush" Value="{DynamicResource AppBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BoxShadow" Value="0 4 8 0 #40000000" />
+        </Style>
+        <Style Selector="TabItem">
+            <Setter Property="Foreground" Value="{DynamicResource AppBorder}" />
+        </Style>
+        <Style Selector="TabItem:selected">
+            <Setter Property="Foreground" Value="{DynamicResource AppHighlight}" />
+        </Style>
+        <Style Selector="ComboBox">
+            <Setter Property="Background" Value="{DynamicResource AppCardBackground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource AppBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="{DynamicResource AppHighlight}" />
+            <Setter Property="CornerRadius" Value="8" />
+        </Style>
+        <Style Selector="ComboBox:pointerover /template/ Border#Background">
+            <Setter Property="Background" Value="{DynamicResource AppPrimary}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource AppHighlight}" />
+        </Style>
+        <Style Selector="ComboBoxItem">
+            <Setter Property="Foreground" Value="{DynamicResource AppHighlight}" />
+        </Style>
+        <Style Selector="ComboBoxItem:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource AppPrimary}" />
+        </Style>
+        <Style Selector="ComboBoxItem:selected /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource AppPrimary}" />
         </Style>
     </Window.Styles>
 
-    <TabControl Margin="5" TabStripPlacement="Left">
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <TabControl Margin="5" TabStripPlacement="Left" Background="{DynamicResource AppBackground}">
         
         <!-- General Tab -->
         <TabItem Header="General">
             <Grid ColumnDefinitions="*,Auto,*,Auto,*">
                 
                 <!-- Details Column -->
-                <Grid Grid.Column="0" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                <Border Grid.Column="0" Classes="Card">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                     <TextBlock Grid.Row="0" Classes="Header" Text="Details" />
-                    <GridSplitter Grid.Row="1"/>
+                    <Border Classes="HSep" Grid.Row="1" />
                     <TextBlock Grid.Row="2" Classes="Label" Text="CPU"/>
                     <TextBlock Grid.Row="3" Classes="Value" Text="{Binding CpuName}"/>
-                    <GridSplitter Grid.Row="4"/>
+                    <Border Classes="HSep" Grid.Row="4" />
                     <TextBlock Grid.Row="5" Classes="Label" Text="GPU"/>
                     <TextBlock Grid.Row="6" Classes="Value" Text="{Binding GpuName}"/>
-                    <GridSplitter Grid.Row="7"/>
+                    <Border Classes="HSep" Grid.Row="7" />
                     <TextBlock Grid.Row="8" Classes="Label" Text="Motherboard"/>
                     <TextBlock Grid.Row="9" Classes="Value" Text="{Binding MbName}"/>
-                    <GridSplitter Grid.Row="10"/>
+                    <Border Classes="HSep" Grid.Row="10" />
                     <TextBlock Grid.Row="11" Classes="Label" Text="Storage"/>
                     <TextBlock Grid.Row="12" Classes="Value" Text="{Binding StorageNames}"/>
-                    <GridSplitter Grid.Row="13"/>
+                    <Border Classes="HSep" Grid.Row="13" />
                     <TextBlock Grid.Row="14" Classes="Label" Text="RAM"/>
                     <TextBlock Grid.Row="15" Classes="Value" Text="{Binding TotalRamVolume}"/>
-                    <GridSplitter Grid.Row="16"/>
+                    <Border Classes="HSep" Grid.Row="16" />
                 </Grid>
+                </Border>
 
-                <GridSplitter Grid.Column="1"/>
+                <Border Classes="VSep" Grid.Column="1" />
 
                 <!-- Temperature Column -->
-                <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                <Border Grid.Column="2" Classes="Card">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                     <TextBlock Grid.Row="0" Classes="Header" Text="Temperature" />
-                    <GridSplitter Grid.Row="1"/>
+                    <Border Classes="HSep" Grid.Row="1" />
                     <TextBlock Grid.Row="2" Classes="Label" Text="CPU"/>
                     <TextBlock Grid.Row="3" Classes="Value" Text="{Binding CpuTemp}"/>
-                    <GridSplitter Grid.Row="4"/>
+                    <Border Classes="HSep" Grid.Row="4" />
                     <TextBlock Grid.Row="5" Classes="Label" Text="GPU"/>
                     <TextBlock Grid.Row="6" Classes="Value" Text="{Binding GpuTemp}"/>
-                    <GridSplitter Grid.Row="7"/>
+                    <Border Classes="HSep" Grid.Row="7" />
                     <TextBlock Grid.Row="8" Classes="Label" Text="Motherboard"/>
                     <TextBlock Grid.Row="9" Classes="Value" Text="{Binding MbTemp}"/>
-                    <GridSplitter Grid.Row="10"/>
+                    <Border Classes="HSep" Grid.Row="10" />
                     <TextBlock Grid.Row="11" Classes="Label" Text="Storage"/>
                     <TextBlock Grid.Row="12" Classes="Value" Text="{Binding StorageTemp}"/>
-                    <GridSplitter Grid.Row="13"/>
+                    <Border Classes="HSep" Grid.Row="13" />
                 </Grid>
+                </Border>
 
-                <GridSplitter Grid.Column="3"/>
+                <Border Classes="VSep" Grid.Column="3" />
 
                 <!-- Fan Speed Column -->
-                <Grid Grid.Column="4" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                <Border Grid.Column="4" Classes="Card">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                     <TextBlock Grid.Row="0" Classes="Header" Text="Fan Speed" />
-                    <GridSplitter Grid.Row="1"/>
+                    <Border Classes="HSep" Grid.Row="1" />
                     <TextBlock Grid.Row="2" Classes="Label" Text="CPU"/>
                     <TextBlock Grid.Row="3" Classes="Value" Text="{Binding CpuFanSpeed}"/>
-                    <GridSplitter Grid.Row="4"/>
+                    <Border Classes="HSep" Grid.Row="4" />
                     <TextBlock Grid.Row="5" Classes="Label" Text="GPU"/>
                     <TextBlock Grid.Row="6" Classes="Value" Text="{Binding GpuFanSpeed}"/>
-                    <GridSplitter Grid.Row="7"/>
+                    <Border Classes="HSep" Grid.Row="7" />
                     <TextBlock Grid.Row="8" Classes="Label" Text="Motherboard"/>
                     <TextBlock Grid.Row="9" Classes="Value" Text="{Binding MbFanSpeed}"/>
-                    <GridSplitter Grid.Row="10"/>
+                    <Border Classes="HSep" Grid.Row="10" />
                 </Grid>
+                </Border>
                 
             </Grid>
         </TabItem>
@@ -105,56 +165,62 @@
             <Grid ColumnDefinitions="*,Auto,*,Auto,*">
                 
                 <!-- CPU Info Column -->
-                <Grid Grid.Column="0" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                <Border Grid.Column="0" Classes="Card">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                     <TextBlock Grid.Row="0" Classes="Header" Text="CPU Information" />
-                    <GridSplitter Grid.Row="1"/>
+                    <Border Classes="HSep" Grid.Row="1" />
                     <TextBlock Grid.Row="2" Classes="Label" Text="Name"/>
                     <TextBlock Grid.Row="3" Classes="Value" Text="{Binding CpuName}"/>
-                    <GridSplitter Grid.Row="4"/>
+                    <Border Classes="HSep" Grid.Row="4" />
                     <TextBlock Grid.Row="5" Classes="Label" Text="Temperature"/>
                     <TextBlock Grid.Row="6" Classes="Value" Text="{Binding CpuTemp}"/>
-                    <GridSplitter Grid.Row="7"/>
+                    <Border Classes="HSep" Grid.Row="7" />
                     <TextBlock Grid.Row="8" Classes="Label" Text="Physical Cores"/>
                     <TextBlock Grid.Row="9" Classes="Value" Text="{Binding PhysicalCores}"/>
-                    <GridSplitter Grid.Row="10"/>
+                    <Border Classes="HSep" Grid.Row="10" />
                     <TextBlock Grid.Row="11" Classes="Label" Text="Logical Cores"/>
                     <TextBlock Grid.Row="12" Classes="Value" Text="{Binding LogicalCores}"/>
-                    <GridSplitter Grid.Row="13"/>
+                    <Border Classes="HSep" Grid.Row="13" />
                     <TextBlock Grid.Row="14" Classes="Label" Text="Load of Processor"/>
                     <TextBlock Grid.Row="15" Classes="Value" Text="{Binding CpuUsage}"/>
-                    <GridSplitter Grid.Row="16"/>
+                    <Border Classes="HSep" Grid.Row="16" />
                     <TextBlock Grid.Row="17" Classes="Label" Text="Power Usage"/>
                     <TextBlock Grid.Row="18" Classes="Value" Text="{Binding CpuPowerUsage}"/>
-                    <GridSplitter Grid.Row="19"/>
+                    <Border Classes="HSep" Grid.Row="19" />
                     <TextBlock Grid.Row="20" Classes="Label" Text="Clock Speed"/>
                     <TextBlock Grid.Row="21" Classes="Value" Text="{Binding CpuClockSpeed}"/>
-                    <GridSplitter Grid.Row="22"/>
+                    <Border Classes="HSep" Grid.Row="22" />
                     <TextBlock Grid.Row="23" Classes="Label" Text="Fan Speed"/>
                     <TextBlock Grid.Row="24" Classes="Value" Text="{Binding CpuFanSpeed}"/>
-                    <GridSplitter Grid.Row="25"/>
+                    <Border Classes="HSep" Grid.Row="25" />
                 </Grid>
+                </Border>
 
-                <GridSplitter Grid.Column="1"/>
+                <Border Classes="VSep" Grid.Column="1" />
 
                 <!-- CPU Cores Clock Speeds Column -->
-                <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
-                    <TextBlock Grid.Row="0" Classes="Header" Text="Clock Speed of each core" />
-                    <GridSplitter Grid.Row="1"/>
+                <Border Grid.Column="2" Classes="Card">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                    <TextBlock Grid.Row="0" Classes="Header" Text="Core Clock Speeds" />
+                    <Border Classes="HSep" Grid.Row="1" />
                     <TextBlock Grid.Row="3" Classes="Value" Text="{Binding CoresClockSpeed}"/>
-                    <GridSplitter Grid.Row="4"/>
+                    <Border Classes="HSep" Grid.Row="4" />
                 </Grid>
+                </Border>
 
-                <GridSplitter Grid.Column="3"/>
+                <Border Classes="VSep" Grid.Column="3" />
 
                 <!-- CPU Charts Column -->
-                <Grid Grid.Column="4" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                <Border Grid.Column="4" Classes="Card">
+                    <Grid RowDefinitions="Auto,Auto,*,Auto,*,Auto">
                     <TextBlock Grid.Row="0" Classes="Header" Text="CPU Charts" />
-                    <GridSplitter Grid.Row="1"/>
-                    <views:CpuClockSpeedsGraph Grid.Row="2" />
-                    <GridSplitter Grid.Row="3"/>
-                    <views:CpuTemperatureGraph Grid.Row="4" />
-                    <GridSplitter Grid.Row="5"/>
+                    <Border Classes="HSep" Grid.Row="1" />
+                    <views:CpuClockSpeedsGraph Grid.Row="2" CurrentValue="{Binding CpuClockValue}" />
+                    <Border Classes="HSep" Grid.Row="3" />
+                    <views:CpuTemperatureGraph Grid.Row="4" CurrentValue="{Binding CpuTempValue}" />
+                    <Border Classes="HSep" Grid.Row="5" />
                 </Grid>
+                </Border>
                 
             </Grid>
         </TabItem>
@@ -164,43 +230,50 @@
             <Grid ColumnDefinitions="*,Auto,*">
                 
                 <!-- GPU Info Column -->
-                <Grid Grid.Column="0" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                <Border Grid.Column="0" Classes="Card">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                     <TextBlock Grid.Row="0" Classes="Header" Text="GPU Information" />
-                    <GridSplitter Grid.Row="1"/>
+                    <Border Classes="HSep" Grid.Row="1" />
                     <TextBlock Grid.Row="2" Classes="Label" Text="Name"/>
                     <TextBlock Grid.Row="3" Classes="Value" Text="{Binding GpuName}"/>
-                    <GridSplitter Grid.Row="4"/>
-                    <TextBlock Grid.Row="5" Classes="Label" Text="Temperature"/>
-                    <TextBlock Grid.Row="6" Classes="Value" Text="{Binding GpuTemp}"/>
-                    <GridSplitter Grid.Row="7"/>
-                    <TextBlock Grid.Row="8" Classes="Label" Text="Core Clock"/>
-                    <TextBlock Grid.Row="9" Classes="Value" Text="{Binding GpuClockSpeed}"/>
-                    <GridSplitter Grid.Row="10"/>
-                    <TextBlock Grid.Row="11" Classes="Label" Text="Memory Clock"/>
-                    <TextBlock Grid.Row="12" Classes="Value" Text="{Binding GpuMemoryClockSpeed}"/>
-                    <GridSplitter Grid.Row="13"/>
-                    <TextBlock Grid.Row="14" Classes="Label" Text="GPU Load"/>
-                    <TextBlock Grid.Row="15" Classes="Value" Text="{Binding GpuLoad}"/>
-                    <GridSplitter Grid.Row="16"/>
-                    <TextBlock Grid.Row="17" Classes="Label" Text="GPU Power Load"/>
-                    <TextBlock Grid.Row="18" Classes="Value" Text="{Binding GpuPowerLoad}"/>
-                    <GridSplitter Grid.Row="19"/>
-                    <TextBlock Grid.Row="20" Classes="Label" Text="Fan Speed"/>
-                    <TextBlock Grid.Row="21" Classes="Value" Text="{Binding GpuFanSpeed}"/>
-                    <GridSplitter Grid.Row="22"/>
+                    <Border Classes="HSep" Grid.Row="4" />
+                    <TextBlock Grid.Row="5" Classes="Label" Text="Manufacturer"/>
+                    <TextBlock Grid.Row="6" Classes="Value" Text="{Binding GpuBoardManufacturer}"/>
+                    <Border Classes="HSep" Grid.Row="7" />
+                    <TextBlock Grid.Row="8" Classes="Label" Text="Temperature"/>
+                    <TextBlock Grid.Row="9" Classes="Value" Text="{Binding GpuTemp}"/>
+                    <Border Classes="HSep" Grid.Row="10" />
+                    <TextBlock Grid.Row="11" Classes="Label" Text="Core Clock"/>
+                    <TextBlock Grid.Row="12" Classes="Value" Text="{Binding GpuClockSpeed}"/>
+                    <Border Classes="HSep" Grid.Row="13" />
+                    <TextBlock Grid.Row="14" Classes="Label" Text="Memory Clock"/>
+                    <TextBlock Grid.Row="15" Classes="Value" Text="{Binding GpuMemoryClockSpeed}"/>
+                    <Border Classes="HSep" Grid.Row="16" />
+                    <TextBlock Grid.Row="17" Classes="Label" Text="GPU Load"/>
+                    <TextBlock Grid.Row="18" Classes="Value" Text="{Binding GpuLoad}"/>
+                    <Border Classes="HSep" Grid.Row="19" />
+                    <TextBlock Grid.Row="20" Classes="Label" Text="GPU Power Load"/>
+                    <TextBlock Grid.Row="21" Classes="Value" Text="{Binding GpuPowerLoad}"/>
+                    <Border Classes="HSep" Grid.Row="22" />
+                    <TextBlock Grid.Row="23" Classes="Label" Text="Fan Speed"/>
+                    <TextBlock Grid.Row="24" Classes="Value" Text="{Binding GpuFanSpeed}"/>
+                    <Border Classes="HSep" Grid.Row="25" />
                 </Grid>
+                </Border>
 
-                <GridSplitter Grid.Column="1"/>
+                <Border Classes="VSep" Grid.Column="1" />
 
                 <!-- GPU Charts Column -->
-                <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                <Border Grid.Column="2" Classes="Card">
+                    <Grid RowDefinitions="Auto,Auto,*,Auto,*,Auto">
                     <TextBlock Grid.Row="0" Classes="Header" Text="GPU Charts" />
-                    <GridSplitter Grid.Row="1"/>
-                    <views:GpuClockSpeedsGraph Grid.Row="2" />
-                    <GridSplitter Grid.Row="3"/>
-                    <views:GpuTemperatureGraph Grid.Row="4" />
-                    <GridSplitter Grid.Row="5"/>
+                    <Border Classes="HSep" Grid.Row="1" />
+                    <views:GpuClockSpeedsGraph Grid.Row="2" CurrentValue="{Binding GpuClockValue}" />
+                    <Border Classes="HSep" Grid.Row="3" />
+                    <views:GpuTemperatureGraph Grid.Row="4" CurrentValue="{Binding GpuTempValue}" />
+                    <Border Classes="HSep" Grid.Row="5" />
                 </Grid>
+                </Border>
                 
             </Grid>
         </TabItem>
@@ -210,38 +283,42 @@
             <Grid ColumnDefinitions="*,Auto,*">
                 
                 <!-- Motherboard Info Column -->
-                <Grid Grid.Column="0" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                <Border Grid.Column="0" Classes="Card">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                     <TextBlock Grid.Row="0" Classes="Header" Text="Motherboard Information" />
-                    <GridSplitter Grid.Row="1"/>
+                    <Border Classes="HSep" Grid.Row="1" />
                     <TextBlock Grid.Row="2" Classes="Label" Text="Name"/>
                     <TextBlock Grid.Row="3" Classes="Value" Text="{Binding MbName}"/>
-                    <GridSplitter Grid.Row="4"/>
+                    <Border Classes="HSep" Grid.Row="4" />
                     <TextBlock Grid.Row="5" Classes="Label" Text="Manufacturer"/>
                     <TextBlock Grid.Row="6" Classes="Value" Text="{Binding MbManufacturer}"/>
-                    <GridSplitter Grid.Row="7"/>
+                    <Border Classes="HSep" Grid.Row="7" />
                     <TextBlock Grid.Row="8" Classes="Label" Text="Temperature"/>
                     <TextBlock Grid.Row="9" Classes="Value" Text="{Binding MbTemp}"/>
-                    <GridSplitter Grid.Row="10"/>
+                    <Border Classes="HSep" Grid.Row="10" />
                     <TextBlock Grid.Row="11" Classes="Label" Text="BIOS Version"/>
                     <TextBlock Grid.Row="12" Classes="Value" Text="{Binding MbBiosName}"/>
-                    <GridSplitter Grid.Row="13"/>
+                    <Border Classes="HSep" Grid.Row="13" />
                     <TextBlock Grid.Row="14" Classes="Label" Text="BIOS Manufacturer"/>
                     <TextBlock Grid.Row="15" Classes="Value" Text="{Binding MbManufacturerBiosName}"/>
-                    <GridSplitter Grid.Row="16"/>
+                    <Border Classes="HSep" Grid.Row="16" />
                     <TextBlock Grid.Row="17" Classes="Label" Text="Fan Speed"/>
                     <TextBlock Grid.Row="18" Classes="Value" Text="{Binding MbFanSpeed}"/>
-                    <GridSplitter Grid.Row="19"/>
+                    <Border Classes="HSep" Grid.Row="19" />
                 </Grid>
+                </Border>
 
-                <GridSplitter Grid.Column="1"/>
+                <Border Classes="VSep" Grid.Column="1" />
 
                 <!-- Motherboard Charts Column -->
-                <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,Auto">
+                <Border Grid.Column="2" Classes="Card">
+                    <Grid RowDefinitions="Auto,Auto,*,Auto">
                     <TextBlock Grid.Row="0" Classes="Header" Text="Motherboard Charts" />
-                    <GridSplitter Grid.Row="1"/>
-                    <views:MotherboardTemperatureGraph Grid.Row="2" />
-                    <GridSplitter Grid.Row="3"/>
+                    <Border Classes="HSep" Grid.Row="1" />
+                    <views:MotherboardTemperatureGraph Grid.Row="2" CurrentValue="{Binding MbTempValue}" />
+                    <Border Classes="HSep" Grid.Row="3" />
                 </Grid>
+                </Border>
                 
             </Grid>
         </TabItem>
@@ -251,12 +328,13 @@
             <Grid ColumnDefinitions="*,Auto,*">
                 
                 <!-- RAM Info Column -->
-                <Grid Grid.Column="0" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                <Border Grid.Column="0" Classes="Card">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                     <TextBlock Grid.Row="0" Classes="Header" Text="RAM Selection" />
-                    <GridSplitter Grid.Row="1"/>
+                    <Border Classes="HSep" Grid.Row="1" />
                     <ComboBox Grid.Row="2" Margin="10" FontSize="16" ItemsSource="{Binding RamSlots}" SelectedItem="{Binding SelectedRamSlot}">
                         <ComboBox.ItemTemplate>
-                            <DataTemplate DataType="vm:RamSlotInfo">
+                            <DataTemplate DataType="models:RamSlotInfo">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Slot}"/>
                                     <TextBlock Margin="10,0,0,0" Text="{Binding Capacity}"/>
@@ -265,37 +343,41 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <GridSplitter Grid.Row="3"/>
+                    <Border Classes="HSep" Grid.Row="3" />
                     <TextBlock Grid.Row="4" Classes="Label" Text="Total RAM"/>
                     <TextBlock Grid.Row="5" Classes="Value" Text="{Binding TotalRamVolume}"/>
-                    <GridSplitter Grid.Row="6"/>
+                    <Border Classes="HSep" Grid.Row="6" />
                 </Grid>
+                </Border>
 
-                <GridSplitter Grid.Column="1"/>
+                <Border Classes="VSep" Grid.Column="1" />
 
                 <!-- RAM Details Column -->
-                <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                <Border Grid.Column="2" Classes="Card">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                     <TextBlock Grid.Row="0" Classes="Header" Text="RAM Information" />
-                    <GridSplitter Grid.Row="1"/>
+                    <Border Classes="HSep" Grid.Row="1" />
                     <TextBlock Grid.Row="2" Classes="Label" Text="Slot"/>
                     <TextBlock Grid.Row="3" Classes="Value" Text="{Binding SelectedRamSlot.Slot}"/>
-                    <GridSplitter Grid.Row="4"/>
+                    <Border Classes="HSep" Grid.Row="4" />
                     <TextBlock Grid.Row="5" Classes="Label" Text="Manufacturer"/>
                     <TextBlock Grid.Row="6" Classes="Value" Text="{Binding SelectedRamSlot.Manufacturer}"/>
-                    <GridSplitter Grid.Row="7"/>
+                    <Border Classes="HSep" Grid.Row="7" />
                     <TextBlock Grid.Row="8" Classes="Label" Text="Part Number"/>
                     <TextBlock Grid.Row="9" Classes="Value" Text="{Binding SelectedRamSlot.PartNumber}"/>
-                    <GridSplitter Grid.Row="10"/>
+                    <Border Classes="HSep" Grid.Row="10" />
                     <TextBlock Grid.Row="11" Classes="Label" Text="Capacity"/>
                     <TextBlock Grid.Row="12" Classes="Value" Text="{Binding SelectedRamSlot.Capacity}"/>
-                    <GridSplitter Grid.Row="13"/>
+                    <Border Classes="HSep" Grid.Row="13" />
                     <TextBlock Grid.Row="14" Classes="Label" Text="Speed"/>
                     <TextBlock Grid.Row="15" Classes="Value" Text="{Binding SelectedRamSlot.Speed}"/>
-                    <GridSplitter Grid.Row="16"/>
+                    <Border Classes="HSep" Grid.Row="16" />
                 </Grid>
+                </Border>
                 
             </Grid>
         </TabItem>
 
     </TabControl>
+    </ScrollViewer>
 </Window>

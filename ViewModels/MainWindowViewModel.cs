@@ -5,28 +5,37 @@ using System.Threading.Tasks;
 using System.Threading;
 using ReactiveUI;
 using MoRoC.Classes;
+using MoRoC.Models;
 
 namespace MoRoC.ViewModels
 {
-    public class RamSlotInfo
+    public class MainWindowViewModel : ReactiveObject, IDisposable
     {
-        public string Slot { get; set; }
-        public string Manufacturer { get; set; }
-        public string PartNumber { get; set; }
-        public string Capacity { get; set; }
-        public string Speed { get; set; }
-        public string ConfiguredSpeed { get; set; }
-    }
-    public partial class MainWindowViewModel : ReactiveObject
-    {
-        private readonly SemaphoreSlim _updateLock = new SemaphoreSlim(1, 1);
+        // ── Fields ───────────────────────────────────────────────
+        private readonly SemaphoreSlim _updateLock = new(1, 1);
         private readonly CPU _cpu;
         private readonly GPU _gpu;
         private readonly RAM _ram;
         private readonly MotherBoard _motherboard;
         private readonly Storage _storage;
         private readonly Task _updateTask;
-        private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        private readonly CancellationTokenSource _cts = new();
+        private bool _disposed;
+
+        // ── Static properties (set once in constructor) ─────────
+        public string CpuName { get; }
+        public string GpuName { get; }
+        public string GpuBoardManufacturer { get; }
+        public string MbName { get; }
+        public string MbManufacturer { get; }
+        public string MbBiosName { get; }
+        public string MbManufacturerBiosName { get; }
+        public string StorageNames { get; }
+        public string TotalRamVolume => _ram.TotalVolume;
+        public int PhysicalCores { get; }
+        public int LogicalCores { get; }
+
+        // ── RAM ──────────────────────────────────────────────────
         private ObservableCollection<RamSlotInfo> _ramSlots;
         public ObservableCollection<RamSlotInfo> RamSlots
         {
@@ -40,19 +49,8 @@ namespace MoRoC.ViewModels
             get => _selectedRamSlot;
             set => this.RaiseAndSetIfChanged(ref _selectedRamSlot, value);
         }
-        
-        public string CpuName { get; }
-        public string GpuName { get; }
-        public string MbName { get; }
-        public string MbManufacturer { get; }
-        public string MbBiosName { get; }
-        public string MbManufacturerBiosName { get; }
-        public string StorageNames { get; }
-        
-        public string TotalRamVolume => _ram.TotalVolume;
-        public int PhysicalCores { get; }
-        public int LogicalCores { get; }
-        
+
+        // ── Dynamic string properties (UI text display) ─────────
         private string _cpuTemp;
         public string CpuTemp { get => _cpuTemp; set => this.RaiseAndSetIfChanged(ref _cpuTemp, value); }
 
@@ -98,6 +96,43 @@ namespace MoRoC.ViewModels
         private string _gpuMemoryClockSpeed;
         public string GpuMemoryClockSpeed { get => _gpuMemoryClockSpeed; set => this.RaiseAndSetIfChanged(ref _gpuMemoryClockSpeed, value); }
 
+        // ── Graph value properties (double, for BaseGraph binding) ──
+        private double _cpuTempValue = double.NaN;
+        public double CpuTempValue
+        {
+            get => _cpuTempValue;
+            set { _cpuTempValue = value; this.RaisePropertyChanged(); }
+        }
+
+        private double _cpuClockValue = double.NaN;
+        public double CpuClockValue
+        {
+            get => _cpuClockValue;
+            set { _cpuClockValue = value; this.RaisePropertyChanged(); }
+        }
+
+        private double _gpuTempValue = double.NaN;
+        public double GpuTempValue
+        {
+            get => _gpuTempValue;
+            set { _gpuTempValue = value; this.RaisePropertyChanged(); }
+        }
+
+        private double _gpuClockValue = double.NaN;
+        public double GpuClockValue
+        {
+            get => _gpuClockValue;
+            set { _gpuClockValue = value; this.RaisePropertyChanged(); }
+        }
+
+        private double _mbTempValue = double.NaN;
+        public double MbTempValue
+        {
+            get => _mbTempValue;
+            set { _mbTempValue = value; this.RaisePropertyChanged(); }
+        }
+
+        // ── Constructor ──────────────────────────────────────────
         public MainWindowViewModel()
         {
             _cpu = new CPU();
@@ -111,6 +146,7 @@ namespace MoRoC.ViewModels
             LogicalCores = _cpu.LogicalCores;
 
             GpuName = _gpu.Name;
+            GpuBoardManufacturer = _gpu.BoardManufacturer;
 
             MbName = _motherboard.Name;
             MbBiosName = _motherboard.BiosName;
@@ -120,8 +156,9 @@ namespace MoRoC.ViewModels
             StorageNames = string.Join("\n", _storage.Names);
 
             InitializeRamSlots();
-            // Start background update task
-            _updateTask = Task.Run(UpdateValuesAsync, _cancellationTokenSource.Token);
+
+            // Single background polling loop for all telemetry
+            _updateTask = Task.Run(UpdateValuesAsync);
         }
         
         private void InitializeRamSlots()
@@ -148,14 +185,18 @@ namespace MoRoC.ViewModels
             }
         }
         
+        /// <summary>
+        /// Single polling loop that refreshes all hardware and pushes data to the UI.
+        /// Replaces 6 separate uncoordinated loops (1 in ViewModel + 5 in graph controls).
+        /// </summary>
         private async Task UpdateValuesAsync()
         {
-            while (!_cancellationTokenSource.Token.IsCancellationRequested)
+            while (!_cts.Token.IsCancellationRequested)
             {
-                await _updateLock.WaitAsync();
+                await _updateLock.WaitAsync(_cts.Token);
                 try
                 {
-                    // Update all components hardware sensors once
+                    // Single hardware sensor refresh for all components
                     HardwareMonitorService.Instance.UpdateAll();
 
                     _cpu.Refresh();
@@ -163,9 +204,10 @@ namespace MoRoC.ViewModels
                     _motherboard.Refresh();
                     _storage.Refresh();
                     
-                    // Collect updated values
+                    // Push all values to UI thread in one batch
                     Dispatcher.UIThread.Post(() =>
                     {
+                        // String values for text display
                         CpuTemp = _cpu.Temperature;
                         GpuTemp = _gpu.Temperature;
                         MbTemp = _motherboard.Temperature;
@@ -181,6 +223,13 @@ namespace MoRoC.ViewModels
                         GpuMemoryClockSpeed = $"{_gpu.MemoryClockSpeed} MHz";
                         GpuLoad = $"{_gpu.CoreLoad}%";
                         GpuPowerLoad = $"{_gpu.PowerLoad} W";
+
+                        // Raw numeric values for graph controls
+                        CpuTempValue = _cpu.TemperatureValue;
+                        CpuClockValue = _cpu.TotalClockSpeedGHz;
+                        GpuTempValue = _gpu.TemperatureValue;
+                        GpuClockValue = _gpu.CoreClockSpeed;
+                        MbTempValue = _motherboard.TemperatureValue;
                     });
                 }
                 finally
@@ -188,16 +237,27 @@ namespace MoRoC.ViewModels
                     _updateLock.Release();
                 }
 
-                await Task.Delay(1000, _cancellationTokenSource.Token);
+                try
+                {
+                    await Task.Delay(1000, _cts.Token);
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
             }
         }
 
-        public void Cleanup()
+        public void Dispose()
         {
-            _cancellationTokenSource.Cancel();
-            _updateTask.Wait(TimeSpan.FromSeconds(1));
+            if (_disposed) return;
+            _disposed = true;
+
+            _cts.Cancel();
+            try { _updateTask?.Wait(TimeSpan.FromSeconds(2)); } catch { }
             _updateLock.Dispose();
-            _cancellationTokenSource.Dispose();
+            _cts.Dispose();
+            HardwareMonitorService.Instance.Dispose();
         }
     }
 }

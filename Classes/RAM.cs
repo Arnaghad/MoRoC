@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Management;
 
@@ -24,7 +24,7 @@ namespace MoRoC.Classes
         {
             try
             {
-                var searcher = new ManagementObjectSearcher("SELECT Manufacturer, Speed, Capacity, PartNumber, ConfiguredClockSpeed, DeviceLocator FROM Win32_PhysicalMemory");
+                using var searcher = new ManagementObjectSearcher("SELECT Manufacturer, Speed, Capacity, PartNumber, ConfiguredClockSpeed, DeviceLocator FROM Win32_PhysicalMemory");
                 
                 var nameList = new List<string>();
                 var slotList = new List<string>();

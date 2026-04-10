@@ -8,6 +8,7 @@ namespace MoRoC.Classes
         private static HardwareMonitorService _instance;
         private static readonly object _lock = new object();
         private readonly Computer _computer;
+        private bool _disposed;
 
         private HardwareMonitorService()
         {
@@ -48,9 +49,12 @@ namespace MoRoC.Classes
 
         public void Dispose()
         {
-            if (_computer != null)
+            lock (_lock)
             {
-                _computer.Close();
+                if (_disposed) return;
+                _disposed = true;
+                _computer?.Close();
+                _instance = null;
             }
         }
     }

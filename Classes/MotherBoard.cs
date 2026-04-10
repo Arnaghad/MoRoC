@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management;
 using LibreHardwareMonitor.Hardware;
-using System.Linq;
 
 namespace MoRoC.Classes
 {
@@ -13,66 +12,39 @@ namespace MoRoC.Classes
         public string Name { get; private set; }
         public string Manufacturer { get; private set; }
         public string Temperature { get; private set; }
+        public float TemperatureValue { get; private set; }
         public string BiosName { get; private set; }
         public string BiosManufacturer { get; private set; }
         public List<string> Fans { get; private set; } = new List<string>();
 
-        public MotherBoard() : base()
+        public MotherBoard()
         {
-
-
-            UpdateAllProperties();
+            UpdateStaticInfo();
+            Refresh();
         }
 
-        private void UpdateAllProperties()
+        /// <summary>
+        /// Fetches Name + Manufacturer in a single WMI query (was two separate queries).
+        /// Also fetches BIOS info.
+        /// </summary>
+        private void UpdateStaticInfo()
         {
-            UpdateName();
-            UpdateMotherboardManufacturer();
-            UpdateTemperature();
-            UpdateBiosInfo();
-            UpdateFanSpeed();
-        }
-
-        private void UpdateName()
-        {
+            // Single WMI query for baseboard (was two separate queries for Name and Manufacturer)
             Name = "Unknown";
-            using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_BaseBoard"))
+            Manufacturer = "Unknown";
+            using (var searcher = new ManagementObjectSearcher("SELECT Product, Manufacturer FROM Win32_BaseBoard"))
             {
                 foreach (ManagementObject obj in searcher.Get())
                 {
                     Name = obj["Product"]?.ToString() ?? "Unknown Motherboard";
-                }
-            }
-        }
-
-        private void UpdateMotherboardManufacturer()
-        {
-            Manufacturer = "Unknown";
-            using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_BaseBoard"))
-            {
-                foreach (ManagementObject obj in searcher.Get())
-                {
                     Manufacturer = obj["Manufacturer"]?.ToString() ?? "Unknown";
                 }
             }
-        }
 
-        private void UpdateTemperature()
-        {
-            Temperature = _computer.Hardware
-                .Where(hardwareItem => hardwareItem.HardwareType == HardwareType.Motherboard)
-                .SelectMany(hardwareItem => hardwareItem.SubHardware.Select(subHardware => subHardware.Sensors).SelectMany(sensors => sensors))
-                .Where(sensor => sensor.SensorType == SensorType.Temperature)
-                .Select(sensor => sensor.Value.HasValue ? $"{sensor.Value.Value:F1} \u00b0C" : "N/A")
-                .FirstOrDefault() ?? "N/A"; 
-        }
-
-        private void UpdateBiosInfo()
-        {
+            // BIOS info
             BiosName = "Unknown";
             BiosManufacturer = "Unknown";
-
-            using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_BIOS"))
+            using (var searcher = new ManagementObjectSearcher("SELECT Name, Manufacturer FROM Win32_BIOS"))
             {
                 foreach (ManagementObject obj in searcher.Get())
                 {
@@ -80,6 +52,24 @@ namespace MoRoC.Classes
                     BiosManufacturer = obj["Manufacturer"]?.ToString() ?? "Unknown";
                 }
             }
+        }
+
+        public void Refresh()
+        {
+            UpdateTemperature();
+            UpdateFanSpeed();
+        }
+
+        private void UpdateTemperature()
+        {
+            var sensor = _computer.Hardware
+                .Where(h => h.HardwareType == HardwareType.Motherboard)
+                .SelectMany(h => h.SubHardware)
+                .SelectMany(sh => sh.Sensors)
+                .FirstOrDefault(s => s.SensorType == SensorType.Temperature);
+
+            TemperatureValue = sensor?.Value ?? 0;
+            Temperature = sensor?.Value.HasValue == true ? $"{sensor.Value.Value:F1} °C" : "N/A";
         }
 
         private void UpdateFanSpeed()
@@ -94,12 +84,6 @@ namespace MoRoC.Classes
                 .Select(sensor => sensor.Value.HasValue ? $"{sensor.Value.Value:F0} RPM" : "N/A");
 
             Fans.AddRange(fans);
-        }
-
-        public void Refresh()
-        {
-            UpdateTemperature();
-            UpdateFanSpeed();
         }
     }
 }

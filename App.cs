@@ -1,9 +1,8 @@
-﻿using Avalonia;
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Styling;
-using Material.Colors;
-using Material.Styles.Themes;
-using Material.Styles.Themes.Base;
+using Avalonia.Themes.Fluent;
+using MoRoC.Classes;
 using MoRoC.ViewModels;
 using MoRoC.Views;
 
@@ -13,14 +12,30 @@ namespace MoRoC
     {
         public override void Initialize()
         {
-            var materialTheme = new MaterialTheme(null)
-            {
-                BaseTheme = BaseThemeMode.Dark,
-                PrimaryColor = PrimaryColor.Grey
-            };
+            var fluentTheme = new FluentTheme();
+            Styles.Add(fluentTheme);
 
-            Styles.Add(materialTheme);
-            RequestedThemeVariant = ThemeVariant.Default;
+            RequestedThemeVariant = ThemeVariant.Dark;
+
+            Resources.Add("AppBackground", Avalonia.Media.SolidColorBrush.Parse(ThemeConstants.Background));
+            Resources.Add("AppPrimary", Avalonia.Media.SolidColorBrush.Parse(ThemeConstants.Primary));
+            Resources.Add("AppBorder", Avalonia.Media.SolidColorBrush.Parse(ThemeConstants.Border));
+            Resources.Add("AppCardBackground", Avalonia.Media.SolidColorBrush.Parse(ThemeConstants.CardBackground));
+            Resources.Add("AppHighlight", Avalonia.Media.SolidColorBrush.Parse(ThemeConstants.Highlight));
+
+            // Gradient
+            var gradientStops = new Avalonia.Media.GradientStops
+            {
+                new Avalonia.Media.GradientStop(Avalonia.Media.Color.Parse(ThemeConstants.GradientStart), 0),
+                new Avalonia.Media.GradientStop(Avalonia.Media.Color.Parse(ThemeConstants.GradientEnd), 1)
+            };
+            var linearGradientBrush = new Avalonia.Media.LinearGradientBrush
+            {
+                StartPoint = new Avalonia.RelativePoint(0, 0, Avalonia.RelativeUnit.Relative),
+                EndPoint = new Avalonia.RelativePoint(0, 1, Avalonia.RelativeUnit.Relative),
+                GradientStops = gradientStops
+            };
+            Resources.Add("AppButtonGradient", linearGradientBrush);
         }
 
         public override void OnFrameworkInitializationCompleted()
